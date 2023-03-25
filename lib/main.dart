@@ -110,6 +110,7 @@ class _conteudoPagina1State extends State<conteudoPagina1> {
 
   Future<int> conectaMQTT() async {
     final client = MqttServerClient('mqtt.eclipseprojects.io', '');
+    String topico = "FIT_bruno";
 
     /// Set the correct MQTT protocol for mosquito
     client.setProtocolV311();
@@ -119,8 +120,7 @@ class _conteudoPagina1State extends State<conteudoPagina1> {
     client.onSubscribed = onSubscribed;
     final connMess = MqttConnectMessage()
         .withClientIdentifier('Mqtt_MyClientUniqueIdQ1')
-        .withWillTopic(
-            'FIT_bruno') // If you set this you must set a will message
+        .withWillTopic(topico) // If you set this you must set a will message
         .withWillMessage('My Will message')
         .startClean() // Non persistent session for testing
         .withWillQos(MqttQos.atLeastOnce);
@@ -146,12 +146,12 @@ class _conteudoPagina1State extends State<conteudoPagina1> {
 
     /// Lets try our subscriptions
     print('EXAMPLE:: <<<< SUBSCRIBE 1 >>>>');
-    const topic1 = 'FIT_bruno'; // Not a wildcard topic
+    String topic1 = topico; // Not a wildcard topic
     client.subscribe(topic1, MqttQos.atLeastOnce);
     print('EXAMPLE:: <<<< SUBSCRIBE 2 >>>>');
-    const topic2 = 'FIT_bruno'; // Not a wildcard topic
+    String topic2 = topico; // Not a wildcard topic
     client.subscribe(topic2, MqttQos.atLeastOnce);
-    const topic3 = 'FIT_bruno'; // Not a wildcard topic - no subscription
+    String topic3 = topico; // Not a wildcard topic - no subscription
 
     client.updates!.listen((messageList) {
       final recMess = messageList[0];
